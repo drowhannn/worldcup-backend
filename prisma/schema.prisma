@@ -9,3 +9,51 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum FixtureCategory {
+  GROUP_STAGE
+  KNOCKOUT
+}
+
+enum FixtureResult {
+  TEAMA_WIN
+  TEAMB_WIN
+  DRAW
+}
+
+model User {
+  id         Int          @id @default(autoincrement())
+  email      String       @unique
+  hash       String
+  username   String?      @unique
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  Prediction Prediction[]
+}
+
+model Fixture {
+  id         Int             @id @default(autoincrement())
+  teamA      String
+  teamB      String
+  date       DateTime
+  category   FixtureCategory
+  result     FixtureResult?
+  scoreA     Int?
+  scoreB     Int?
+  penaltyA   Int?
+  penaltyB   Int?
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+  Prediction Prediction[]
+}
+
+model Prediction {
+  id        Int           @id @default(autoincrement())
+  fixtureId Int
+  fixture   Fixture       @relation(fields: [fixtureId], references: [id])
+  userId    Int
+  user      User          @relation(fields: [userId], references: [id])
+  result    FixtureResult
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
