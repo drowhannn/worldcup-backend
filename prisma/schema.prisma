@@ -12,7 +12,11 @@ datasource db {
 
 enum FixtureCategory {
   GROUP_STAGE
-  KNOCKOUT
+  ROUND_OF_16
+  QUARTER_FINAL
+  SEMI_FINAL
+  THIRD_PLACE_PLAYOFF
+  FINAL
 }
 
 enum FixtureResult {
@@ -21,20 +25,58 @@ enum FixtureResult {
   DRAW
 }
 
+enum Team {
+  Argentina
+  Brazil
+  England
+  France
+  Spain
+  Belgium
+  Portugal
+  Germany
+  Netherlands
+  Uruguay
+  Croatia
+  Denmark
+  Mexico
+  USA
+  Senegal
+  Wales
+  Poland
+  Australia
+  Japan
+  Morocco
+  Switzerland
+  Ghana
+  South_Korea
+  Cameroon
+  Serbia
+  Canada
+  Costa_Rica
+  Tunisia
+  Saudi_Arabia
+  Iran
+  Ecuador
+  Qatar
+}
+
 model User {
-  id         Int          @id @default(autoincrement())
-  email      String       @unique
-  hash       String
-  username   String?      @unique
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  Prediction Prediction[]
+  id           Int          @id @default(autoincrement())
+  email        String       @unique
+  hash         String
+  isAdmin      Boolean      @default(false)
+  username     String       @unique
+  favoriteTeam Team?
+  coins        Int          @default(0)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  Prediction   Prediction[]
 }
 
 model Fixture {
   id         Int             @id @default(autoincrement())
-  teamA      String
-  teamB      String
+  teamA      Team
+  teamB      Team
   date       DateTime
   category   FixtureCategory
   result     FixtureResult?
