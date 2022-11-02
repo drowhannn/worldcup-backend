@@ -46,3 +46,29 @@ export class CreateFixtureDto {
   @IsOptional()
   penaltyB?: number;
 }
+
+export class UpdateResultDto {
+  @IsNumber()
+  @IsNotEmpty()
+  id: number;
+
+  @IsEnum(FixtureResult)
+  @IsNotEmpty()
+  result: FixtureResult;
+
+  @IsNumber()
+  @IsNotEmpty()
+  scoreA: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  scoreB: number;
+
+  @IsNumber()
+  @IsOptional()
+  penaltyA?: number;
+
+  @IsNumber()
+  @IsOptional()
+  penaltyB?: number;
+}

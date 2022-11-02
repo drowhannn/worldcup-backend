@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateFixtureDto } from './dto';
+import { CreateFixtureDto, UpdateResultDto } from './dto';
 
 @Injectable()
 export class FixtureService {
@@ -18,6 +18,24 @@ export class FixtureService {
     console.log(dto);
     try {
       return this.prisma.fixture.create({
+        data: {
+          ...dto,
+        },
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  update(dto: UpdateResultDto, user: User) {
+    if (!user.isAdmin) {
+      throw new ForbiddenException('You are not allowed to update a fixture');
+    }
+    try {
+      return this.prisma.fixture.update({
+        where: {
+          id: dto.id,
+        },
         data: {
           ...dto,
         },

@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
-import { CreateFixtureDto } from './dto';
+import { CreateFixtureDto, UpdateResultDto } from './dto';
 import { FixtureService } from './fixture.service';
 
 @Controller('fixtures')
@@ -19,5 +19,11 @@ export class FixtureController {
   @UseGuards(JwtGuard)
   create(@Body() dto: CreateFixtureDto, @GetUser() user: User) {
     return this.fixtureService.create(dto, user);
+  }
+
+  @Post('update')
+  @UseGuards(JwtGuard)
+  update(@Body() dto: UpdateResultDto, @GetUser() user: User) {
+    return this.fixtureService.update(dto, user);
   }
 }
