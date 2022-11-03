@@ -10,3 +10,9 @@ export class PredictionDto {
   @IsNotEmpty()
   result: FixtureResult;
 }
+
+export class DeletePredictionDto {
+  @IsNumber()
+  @IsNotEmpty()
+  fixtureId: number;
+}
