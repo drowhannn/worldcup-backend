@@ -52,16 +52,37 @@ export class UpdateResultDto {
   @IsNotEmpty()
   id: number;
 
-  @IsEnum(FixtureResult)
+  @IsEnum(Team)
   @IsNotEmpty()
+  @IsOptional()
+  teamA: Team;
+
+  @IsEnum(Team)
+  @IsOptional()
+  @IsNotEmpty()
+  teamB: Team;
+
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  @IsNotEmpty()
+  date: Date;
+
+  @IsEnum(FixtureCategory)
+  @IsNotEmpty()
+  @IsOptional()
+  category: FixtureCategory;
+
+  @IsEnum(FixtureResult)
+  @IsOptional()
   result: FixtureResult;
 
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   scoreA: number;
 
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   scoreB: number;
 
   @IsNumber()
