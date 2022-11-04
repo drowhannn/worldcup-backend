@@ -26,4 +26,10 @@ export class FixtureController {
   update(@Body() dto: UpdateResultDto, @GetUser() user: User) {
     return this.fixtureService.update(dto, user);
   }
+
+  @Get('upcoming')
+  @UseGuards(JwtGuard)
+  getUpcoming() {
+    return this.fixtureService.getUpcoming();
+  }
 }

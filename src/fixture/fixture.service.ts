@@ -44,4 +44,39 @@ export class FixtureService {
       throw new Error(error);
     }
   }
+
+  async getUpcoming() {
+    const fixtures = await this.prisma.fixture.findMany({
+      where: {
+        date: {
+          gt: new Date(),
+        },
+      },
+    });
+    console.log(fixtures);
+    return 'h';
+  }
+
+  async getLive() {
+    const fixtures = await this.prisma.fixture.findMany({
+      where: {
+        result: null,
+        date: {
+          lt: new Date(),
+        },
+      },
+    });
+    return fixtures;
+  }
+
+  async getFinished() {
+    const fixtures = await this.prisma.fixture.findMany({
+      where: {
+        result: {
+          not: null,
+        },
+      },
+    });
+    return fixtures;
+  }
 }
