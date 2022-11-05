@@ -2,11 +2,14 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
+  Param,
   Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
+import { userInfo } from 'os';
 import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
 import { DeletePredictionDto, PredictionDto } from './dto/prediction.dto';
@@ -32,5 +35,17 @@ export class PredictionController {
   @UseGuards(JwtGuard)
   delete(@Body() dto: DeletePredictionDto, @GetUser() user: User) {
     return this.predictionService.delete(user.id, dto);
+  }
+
+  @Get('/:id')
+  @UseGuards(JwtGuard)
+  getFixturePredictionDetails(
+    @GetUser() user: User,
+    @Param('id') fixtureId: string,
+  ) {
+    return this.predictionService.getFixurePredictionDetails(
+      user.id,
+      parseInt(fixtureId),
+    );
   }
 }

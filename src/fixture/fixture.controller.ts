@@ -32,4 +32,16 @@ export class FixtureController {
   getUpcoming() {
     return this.fixtureService.getUpcoming();
   }
+
+  @Get('live')
+  @UseGuards(JwtGuard)
+  getLive() {
+    return this.fixtureService.getLive();
+  }
+
+  @Get('finished')
+  @UseGuards(JwtGuard)
+  getFinished() {
+    return this.fixtureService.getFinished();
+  }
 }

@@ -60,9 +60,40 @@ export class PredictionService {
     }
   }
 
-  async delete(userId: number, dto: DeletePredictionDto) {
-    await this.checkIfFixtureHasStarted(dto.fixtureId);
+  async getFixurePredictionDetails(userId, fixtureId: number) {
     try {
+      const userPrediction = await this.prisma.prediction.findUnique({
+        where: {
+          userFixtureId: {
+            userId,
+            fixtureId,
+          },
+        },
+      });
+      const hasUserPredicted = !!userPrediction;
+      const predictions = await this.prisma.prediction.findMany({
+        where: {
+          fixtureId,
+        },
+      });
+      const teamA = predictions.filter((p) => p.result === 'TEAMA_WIN').length;
+      const teamB = predictions.filter((p) => p.result === 'TEAMB_WIN').length;
+      const draw = predictions.filter((p) => p.result === 'DRAW').length;
+      return {
+        teamA,
+        teamB,
+        draw,
+        hasUserPredicted,
+        totalPredictions: predictions.length,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async delete(userId: number, dto: DeletePredictionDto) {
+    try {
+      await this.checkIfFixtureHasStarted(dto.fixtureId);
       await this.prisma.prediction.delete({
         where: {
           userFixtureId: {
