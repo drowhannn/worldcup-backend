@@ -53,8 +53,7 @@ export class FixtureService {
         },
       },
     });
-    console.log(fixtures);
-    return 'h';
+    return fixtures;
   }
 
   async getLive() {
