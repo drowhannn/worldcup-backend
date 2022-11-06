@@ -60,8 +60,9 @@ export class PredictionService {
     }
   }
 
-  async getFixurePredictionDetails(userId, fixtureId: number) {
+  async getFixurePredictionDetails(userId: number, fixtureId: number) {
     try {
+      const users = await this.prisma.user.findMany();
       const userPrediction = await this.prisma.prediction.findUnique({
         where: {
           userFixtureId: {
@@ -70,7 +71,6 @@ export class PredictionService {
           },
         },
       });
-      const hasUserPredicted = !!userPrediction;
       const predictions = await this.prisma.prediction.findMany({
         where: {
           fixtureId,
@@ -83,8 +83,8 @@ export class PredictionService {
         teamA,
         teamB,
         draw,
-        hasUserPredicted,
-        totalPredictions: predictions.length,
+        userPrediction: userPrediction?.result,
+        totalUsers: users.length,
       };
     } catch (error) {
       throw error;
